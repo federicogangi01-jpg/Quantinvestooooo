@@ -1,0 +1,1311 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio Intelligence Backtester</title>
+  <link rel="stylesheet" href="/styles.css?v=20260625-06" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace">
+        <aside class="controls" aria-label="Parametri backtest">
+          <div class="brand">
+            <span class="brand-mark">A</span>
+            <div>
+              <h1>QuantInvesto</h1>
+              <p>Capisci se il tuo portafoglio è davvero adatto a te, quali rischi stai prendendo e come puoi migliorarlo in modo consapevole.</p>
+            </div>
+          </div>
+
+          <nav class="step-nav" aria-label="Percorso analisi">
+            <span class="nav-section-label">Navigazione principale</span>
+            <button type="button" class="step-button active" data-step-target="profile">Configura</button>
+            <button type="button" class="step-button" data-step-target="portfolio">Portafoglio</button>
+            <button type="button" class="step-button" data-step-target="diagnosis">Diagnosi</button>
+            <button type="button" class="step-button" data-step-target="risk">Rischio reale</button>
+            <button type="button" class="step-button" data-step-target="backtest">Viaggio storico</button>
+            <button type="button" class="step-button" data-step-target="frontier">Meno rischio?</button>
+            <button type="button" class="step-button" data-step-target="montecarlo">Robustezza</button>
+            <button type="button" class="step-button" data-step-target="scenarios">Crisi simulate</button>
+            <button type="button" class="step-button" data-step-target="tracking">Manutenzione</button>
+            <button type="button" class="step-button" data-step-target="analysis">Analisi finale</button>
+            <button type="button" class="step-button" data-step-target="improvement">Piano di miglioramento</button>
+            <details class="advanced-nav">
+              <summary>Advanced analytics</summary>
+              <div>
+                <button type="button" class="step-button" data-step-target="factors">Motori del rischio</button>
+                <button type="button" class="step-button" data-step-target="geography">Geografia</button>
+                <button type="button" class="step-button" data-step-target="rolling">Stabilità nel tempo</button>
+                <button type="button" class="step-button" data-step-target="correlation">Diversificazione</button>
+                <button type="button" class="step-button" data-step-target="benchmark">Confronto semplice</button>
+                <button type="button" class="step-button" data-step-target="pac">PAC</button>
+                <button type="button" class="step-button" data-step-target="drawdown">Perdite storiche</button>
+                <button type="button" class="step-button" data-step-target="factorrisk">Rischi nascosti</button>
+                <button type="button" class="step-button" data-step-target="scenarioadvanced">Scenario+</button>
+              </div>
+            </details>
+          </nav>
+
+          <section class="agent-panel" aria-label="Agente AI">
+            <div>
+              <p class="eyebrow">Stato del check-up</p>
+              <strong id="advisor-score">Check-up portafoglio --/100</strong>
+              <span class="plan-badge" id="plan-badge">PLUS</span>
+              <small class="ai-status" id="ai-status">AI in attesa</small>
+              <small class="last-updated" id="last-updated">Ultimo aggiornamento: in attesa</small>
+            </div>
+          </section>
+
+          <form id="backtest-form">
+            <fieldset class="step-panel active" data-step="profile">
+              <legend>1. Profilo investitore</legend>
+              <div class="profile-intro">
+                <strong>Prima capiamo chi sei come investitore.</strong>
+                <p>Le stesse metriche possono essere adatte a una persona e poco adatte a un'altra. Questo profilo serve a leggere rischio, obiettivo e orizzonte in modo personalizzato.</p>
+              </div>
+
+              <section class="profile-section" aria-label="Dati base investitore">
+                <div class="profile-section-title">
+                  <span>1</span>
+                  <div>
+                    <strong>Dati base</strong>
+                    <small>Quanto capitale stai analizzando e quale piano dell'app vuoi usare?</small>
+                  </div>
+                </div>
+                <label>
+                  Piano
+                  <select id="user-plan">
+                    <option value="FREE">FREE</option>
+                    <option value="PLUS" selected>PLUS</option>
+                    <option value="ADVANCED">ADVANCED</option>
+                  </select>
+                  <small>Il piano decide quali sezioni saranno visibili nel percorso.</small>
+                </label>
+                <label>
+                  Capitale da analizzare
+                  <input type="number" id="initial-capital" min="1" step="1" value="10000" />
+                  <small>Serve per tradurre perdite, scenari e obiettivi in euro.</small>
+                </label>
+                <label>
+                  Età
+                  <input type="number" id="investor-age" min="18" max="100" value="40" />
+                  <small>Aiuta a leggere il rischio insieme all'orizzonte temporale.</small>
+                </label>
+              </section>
+
+              <section class="profile-section" aria-label="Obiettivo e orizzonte">
+                <div class="profile-section-title">
+                  <span>2</span>
+                  <div>
+                    <strong>Obiettivo e tempo</strong>
+                    <small>Perché investi e per quanto tempo puoi lasciare lavorare il capitale?</small>
+                  </div>
+                </div>
+                <label>
+                  Orizzonte temporale
+                  <select id="investor-horizon">
+                    <option value="1">1 anno</option>
+                    <option value="3">3 anni</option>
+                    <option value="5">5 anni</option>
+                    <option value="10" selected>10 anni</option>
+                    <option value="20">20 anni</option>
+                    <option value="30">30 anni</option>
+                  </select>
+                  <small>Più l'orizzonte è lungo, più il portafoglio può assorbire fasi difficili.</small>
+                </label>
+                <label>
+                  Priorità dell'obiettivo
+                  <select id="investor-goal-priority">
+                    <option value="capital_growth" selected>Crescita del capitale</option>
+                    <option value="capital_preservation">Protezione del capitale</option>
+                    <option value="income">Entrate periodiche</option>
+                    <option value="retirement">Pensione / lungo periodo</option>
+                    <option value="home">Casa o spesa futura</option>
+                  </select>
+                  <small>Serve all'AI per spiegare se il portafoglio è coerente con la finalità.</small>
+                </label>
+                <label>
+                  Obiettivo personale
+                  <textarea id="investor-objective" rows="3">Crescita del capitale nel lungo periodo</textarea>
+                  <small>Scrivi in parole semplici cosa vuoi ottenere da questo investimento.</small>
+                </label>
+              </section>
+
+              <section class="profile-section" aria-label="Rischio e comportamento">
+                <div class="profile-section-title">
+                  <span>3</span>
+                  <div>
+                    <strong>Rischio e comportamento</strong>
+                    <small>Quanto potresti sopportare senza abbandonare il piano?</small>
+                  </div>
+                </div>
+                <label>
+                  Propensione al rischio
+                  <select id="investor-risk">
+                    <option value="conservative">Prudente</option>
+                    <option value="balanced" selected>Bilanciata</option>
+                    <option value="aggressive">Aggressiva</option>
+                  </select>
+                  <small>Non è un voto: serve a confrontare il rischio reale con quello dichiarato.</small>
+                </label>
+                <label>
+                  Perdita temporanea massima sopportabile
+                  <select id="investor-max-loss">
+                    <option value="0.10">Fino al 10%</option>
+                    <option value="0.20" selected>Fino al 20%</option>
+                    <option value="0.30">Fino al 30%</option>
+                    <option value="0.40">Oltre il 30%</option>
+                  </select>
+                  <small>La useremo per confrontare la peggiore perdita storica con la tua soglia psicologica.</small>
+                </label>
+                <label>
+                  Esperienza con investimenti
+                  <select id="investor-experience">
+                    <option value="beginner" selected>Base</option>
+                    <option value="intermediate">Intermedia</option>
+                    <option value="advanced">Avanzata</option>
+                  </select>
+                  <small>Serve a calibrare il livello delle spiegazioni.</small>
+                </label>
+              </section>
+
+              <section class="profile-section" aria-label="Versamenti e liquidità">
+                <div class="profile-section-title">
+                  <span>4</span>
+                  <div>
+                    <strong>Versamenti e liquidità</strong>
+                    <small>Il piano è statico o prevede contributi nel tempo?</small>
+                  </div>
+                </div>
+                <label>
+                  PAC mensile eventuale
+                  <input type="number" id="investor-pac" min="0" step="10" value="0" />
+                  <small>Se versi ogni mese, il PAC verrà letto come parte del percorso.</small>
+                </label>
+                <label>
+                  Bisogno di liquidità
+                  <select id="investor-liquidity-need">
+                    <option value="low" selected>Basso: posso lasciare investito</option>
+                    <option value="medium">Medio: potrei aver bisogno di una parte</option>
+                    <option value="high">Alto: potrei dover usare il capitale</option>
+                  </select>
+                  <small>Aiuta a capire quanto può pesare una perdita temporanea.</small>
+                </label>
+              </section>
+
+              <div class="profile-output profile-output-inline">
+                <span>Riepilogo profilo</span>
+                <strong id="profile-form-completion">Profilo in compilazione</strong>
+                <small id="profile-form-summary">Rischio dichiarato e orizzonte appariranno qui.</small>
+              </div>
+              <button class="secondary wide next-step" type="button" data-next-step="portfolio">Continua al portfolio</button>
+            </fieldset>
+
+            <fieldset class="step-panel" data-step="portfolio">
+              <legend>2. Strumenti in portafoglio</legend>
+              <div class="standard-selector" id="standard-selector">
+                <div>
+                  <span>Portfolio standard QuantInvest</span>
+                  <strong>Vuoi partire da zero o usare un benchmark educativo?</strong>
+                  <p>I portfolio standard sono modelli educativi: puoi usarli come punto di partenza o solo come confronto.</p>
+                </div>
+                <label>
+                  Modalità
+                  <select id="standard-mode">
+                    <option value="manual">Inserisco il mio portfolio</option>
+                    <option value="load">Uso un portfolio standard</option>
+                    <option value="benchmark">Inserisco il mio portfolio e scelgo uno standard come benchmark</option>
+                  </select>
+                </label>
+                <label>
+                  Portfolio standard
+                  <select id="standard-portfolio-select">
+                    <option value="">Caricamento portfolio standard...</option>
+                  </select>
+                </label>
+                <div class="standard-mode-note" id="standard-mode-note" hidden></div>
+                <div class="standard-selector-preview" id="standard-selector-preview"></div>
+                <p class="field-note" id="standard-selector-note">I portfolio standard QuantInvest sono benchmark educativi, non raccomandazioni personalizzate.</p>
+              </div>
+              <label>
+                Nome portfolio
+                <input id="portfolio-name" autocomplete="off" placeholder="Es. Pensione lungo periodo" />
+              </label>
+              <div id="positions" class="positions"></div>
+              <div class="portfolio-live-check" id="portfolio-live-check" aria-live="polite">
+                <article>
+                  <span>Somma pesi</span>
+                  <strong id="weight-total">--</strong>
+                  <small id="weight-status">Inserisci strumenti e pesi: l’analisi parte solo con totale 100%.</small>
+                </article>
+                <article>
+                  <span>Asset class principale</span>
+                  <strong id="dominant-asset-class">--</strong>
+                  <small id="asset-warning">La composizione verrà letta in tempo reale.</small>
+                </article>
+                <article>
+                  <span>Strumenti riconosciuti</span>
+                  <strong id="recognized-count">--</strong>
+                  <small>Seleziona dalla ricerca per salvare l’ISIN corretto.</small>
+                </article>
+              </div>
+              <p class="field-note">Cerca lo strumento per nome o inserisci direttamente l'ISIN. Dopo la selezione l'app salva l'ISIN per evitare strumenti ambigui.</p>
+              <button class="secondary wide" type="button" id="add-position">+ Aggiungi strumento</button>
+            </fieldset>
+
+            <fieldset class="step-panel" data-step="tracking">
+              <legend>Tracking e portafogli salvati</legend>
+              <button class="secondary wide" type="button" id="save-portfolio">Salva portfolio</button>
+              <label>
+                Seleziona portfolio
+                <select id="saved-portfolios">
+                  <option value="">Nessun portfolio salvato</option>
+                </select>
+              </label>
+              <div class="tool-row">
+                <button class="secondary" type="button" id="load-portfolio">Carica</button>
+                <button class="secondary" type="button" id="monitor-portfolio">Monitora e ribilancia</button>
+              </div>
+              <button class="danger wide" type="button" id="delete-portfolio">Elimina portfolio salvato</button>
+              <p class="field-note">Il monitor usa OpenFIGI ed EODHD. Il controllo di ribilanciamento è mensile di default: in genere una verifica ogni mese aiuta a mantenere i pesi target senza trasformare il portafoglio in trading continuo.</p>
+            </fieldset>
+
+            <fieldset class="time-range step-panel" data-step="portfolio">
+              <legend>Arco temporale</legend>
+              <label>
+                Data iniziale
+                <input type="date" id="start" required />
+              </label>
+              <label>
+                Data finale
+                <input type="date" id="end" required />
+              </label>
+              <div class="quick-ranges" aria-label="Intervalli rapidi">
+                <button type="button" data-range="5y">5 anni</button>
+                <button type="button" data-range="10y">10 anni</button>
+                <button type="button" data-range="15y">15 anni</button>
+                <button type="button" data-range="ytd">YTD</button>
+              </div>
+            </fieldset>
+
+            <fieldset class="monte-carlo-section step-panel" data-step="montecarlo">
+              <legend>Monte Carlo</legend>
+              <label>
+                Orizzonte simulazione
+                <select id="mc-horizon">
+                  <option value="1">1 anno</option>
+                  <option value="2">2 anni</option>
+                  <option value="3">3 anni</option>
+                  <option value="4">4 anni</option>
+                  <option value="5">5 anni</option>
+                  <option value="6">6 anni</option>
+                  <option value="7">7 anni</option>
+                  <option value="8">8 anni</option>
+                  <option value="9">9 anni</option>
+                  <option value="10">10 anni</option>
+                  <option value="11">11 anni</option>
+                  <option value="12">12 anni</option>
+                  <option value="13">13 anni</option>
+                  <option value="14">14 anni</option>
+                  <option value="15">15 anni</option>
+                  <option value="16">16 anni</option>
+                  <option value="17">17 anni</option>
+                  <option value="18">18 anni</option>
+                  <option value="19">19 anni</option>
+                  <option value="20" selected>20 anni</option>
+                </select>
+              </label>
+              <label>
+                Numero simulazioni
+                <select id="mc-simulations">
+                  <option value="500">500</option>
+                  <option value="1000" selected>1.000</option>
+                  <option value="2500">2.500</option>
+                  <option value="5000">5.000</option>
+                  <option value="10000">10.000</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset class="step-panel" data-step="portfolio">
+              <legend>Impostazioni</legend>
+              <label class="check-row">
+                <input type="checkbox" id="demo" />
+                Usa dati demo
+              </label>
+              <p class="field-note">Fonte reale: OpenFIGI per risoluzione strumenti ed EODHD per prezzi storici adjusted. I dati demo sono sintetici e non rappresentano performance reali.</p>
+            </fieldset>
+
+            <fieldset class="step-panel portfolio-save-panel" data-step="portfolio">
+              <legend>Portafogli salvati</legend>
+              <button class="secondary wide" type="button" id="save-portfolio-inline">Salva portfolio</button>
+              <label>
+                Portfolio salvato
+                <select id="saved-portfolios-inline">
+                  <option value="">Nessun portfolio salvato</option>
+                </select>
+              </label>
+              <div class="tool-row">
+                <button class="secondary" type="button" id="load-portfolio-inline">Carica</button>
+                <button class="secondary" type="button" id="monitor-portfolio-inline">Monitora</button>
+              </div>
+              <button class="danger wide" type="button" id="delete-portfolio-inline">Elimina portfolio salvato</button>
+              <p class="field-note">Salva il portafoglio dopo aver inserito strumenti e pesi. Da qui puoi anche caricarlo o eliminarlo senza tornare alla sezione Tracking.</p>
+            </fieldset>
+
+            <button class="primary wide portfolio-run-button step-panel" data-step="portfolio" type="submit" form="backtest-form" id="run-analysis-button">Esegui analisi completa</button>
+            <p id="status" class="status" role="status"></p>
+          </form>
+        </aside>
+
+        <section class="results" aria-label="Risultati backtest">
+          <div class="result-header">
+            <div>
+              <p class="eyebrow">Diagnosi del portafoglio</p>
+              <h2 id="period-title">Configura un portfolio</h2>
+              <p class="result-subtitle">Prima la diagnosi, poi le metriche. I grafici servono ad approfondire, non a complicare.</p>
+            </div>
+            <span id="source-pill" class="source-pill">in attesa</span>
+          </div>
+
+          <div class="guided-flow" aria-label="Percorso guidato">
+            <span data-flow-step="profile">Profilo</span>
+            <span data-flow-step="portfolio">Portafoglio</span>
+            <span data-flow-step="diagnosis">Diagnosi</span>
+            <span data-flow-step="risk">Rischio</span>
+            <span data-flow-step="frontier">Ottimizzazione</span>
+            <span data-flow-step="scenarios">Scenari</span>
+            <span data-flow-step="tracking">Tracking</span>
+          </div>
+
+          <div class="setup-guide result-step active" data-step="profile" aria-label="Guida profilo investitore">
+            <div class="step-progress" aria-label="Avanzamento configurazione">
+              <span class="is-current">Profilo</span>
+              <span>Strumenti</span>
+              <span>Analisi</span>
+              <span>Diagnosi</span>
+            </div>
+            <section class="empty-state-guide">
+              <div>
+                <p class="eyebrow">Step 1 di 3</p>
+                <h3>Inserisci il tuo profilo prima dei numeri</h3>
+                <p>Capitale, orizzonte e rischio servono a leggere i risultati nel modo giusto: lo stesso portafoglio può essere adatto a un investitore e troppo instabile per un altro.</p>
+              </div>
+              <ul class="guide-checklist">
+                <li>Definisci capitale e orizzonte temporale.</li>
+                <li>Scegli una propensione al rischio realistica.</li>
+                <li>Scrivi l’obiettivo in parole semplici.</li>
+              </ul>
+              <div class="profile-output">
+                <span>Output step</span>
+                <strong id="profile-completion">Profilo in compilazione</strong>
+                <small id="profile-summary">Rischio dichiarato e orizzonte appariranno qui.</small>
+              </div>
+              <div class="guided-action-row">
+                <button class="primary next-step" type="button" data-next-step="portfolio">Continua al portafoglio</button>
+                <small>Puoi sempre tornare a modificare il profilo dalla navigazione.</small>
+              </div>
+              <div class="right-form-host" id="profile-form-host" aria-label="Domande profilo investitore"></div>
+            </section>
+          </div>
+
+          <div class="setup-guide result-step" data-step="portfolio" aria-label="Guida inserimento portfolio">
+            <div class="step-progress" aria-label="Avanzamento configurazione">
+              <span>Profilo</span>
+              <span class="is-current">Strumenti</span>
+              <span>Analisi</span>
+              <span>Diagnosi</span>
+            </div>
+            <section class="empty-state-guide">
+              <div>
+                <p class="eyebrow">Step 2 di 3</p>
+                <h3>Costruisci il portafoglio da analizzare</h3>
+                <p>Cerca gli strumenti per nome e seleziona il risultato corretto: l’app userà l’ISIN dietro le quinte per scaricare i prezzi storici senza ambiguità.</p>
+              </div>
+              <div class="example-portfolio">
+                <span>Esempio</span>
+                <strong>Azionario globale 60% · Obbligazioni 30% · Oro 10%</strong>
+                <small>Puoi salvare il portfolio e monitorarlo in futuro con controllo mensile di ribilanciamento.</small>
+              </div>
+              <div class="portfolio-action-note">
+                <span>Quando hai inserito strumenti e pesi</span>
+                <strong>Avvia l'analisi completa dal pulsante verde qui sotto.</strong>
+              </div>
+              <div class="portfolio-readiness" id="portfolio-readiness" aria-live="polite">
+                <span>Prontezza analisi</span>
+                <strong>Completa strumenti e pesi</strong>
+                <small>Il totale deve essere 100% e ogni strumento deve essere riconosciuto.</small>
+              </div>
+              <div class="right-form-host portfolio-host" id="portfolio-form-host" aria-label="Inserimento strumenti e impostazioni portfolio"></div>
+            </section>
+          </div>
+
+          <div class="diagnostic-dashboard result-step" data-step="diagnosis" id="diagnostic-dashboard" aria-label="Dashboard diagnostica">
+            <section class="diagnostic-hero">
+              <div>
+                <p class="eyebrow">Sintesi in 30 secondi</p>
+                <h3 id="diagnostic-title">Il check-up è pronto per essere calcolato</h3>
+                <p id="diagnostic-summary">Esegui l’analisi completa per vedere prima diagnosi, rischio principale e possibile miglioramento. I dati tecnici restano sotto, come approfondimento.</p>
+              </div>
+              <div class="diagnostic-score">
+                <span id="diagnostic-score-label">Check-up del portafoglio</span>
+                <strong id="diagnostic-score">--/100</strong>
+                <small id="diagnostic-plan">Portfolio inserito · Piano PLUS</small>
+                <small id="diagnostic-confidence">Affidabilità: --</small>
+              </div>
+            </section>
+            <div class="diagnostic-grid">
+              <article>
+                <span>Rischio principale</span>
+                <strong id="diagnostic-risk">In attesa</strong>
+                <small>La perdita o instabilità più importante da monitorare.</small>
+              </article>
+              <article>
+                <span>Punto di forza</span>
+                <strong id="diagnostic-strength">In attesa</strong>
+                <small>La caratteristica più solida emersa dai dati.</small>
+              </article>
+              <article>
+                <span>Possibile miglioramento</span>
+                <strong id="diagnostic-improvement">In attesa</strong>
+                <small>Area da valutare senza indicazioni di acquisto o vendita.</small>
+              </article>
+              <article>
+                <span>Perdita massima in euro</span>
+                <strong id="diagnostic-loss-eur">--</strong>
+                <small>Traduzione pratica della peggiore perdita storica.</small>
+              </article>
+              <article>
+                <span>Coerenza con il rischio</span>
+                <strong id="diagnostic-risk-fit">--</strong>
+                <small>Quanto il percorso sembra compatibile col profilo scelto.</small>
+              </article>
+              <article>
+                <span>Stato ribilanciamento</span>
+                <strong id="diagnostic-rebalance">Mensile</strong>
+                <small>Controllo suggerito ogni mese nel tracking.</small>
+              </article>
+            </div>
+            <button class="secondary next-step" type="button" data-next-step="risk">Vedi perché</button>
+          </div>
+
+          <div class="risk-reality result-step" data-step="risk" id="risk-reality" aria-label="Rischio reale">
+            <div class="table-title">
+              <h3>Riusciresti davvero a sopportare questa perdita?</h3>
+              <p class="section-intro">Questa sezione traduce il rischio storico in euro e lo confronta con la perdita massima che hai dichiarato di poter sopportare.</p>
+            </div>
+            <div class="diagnostic-grid">
+              <article>
+                <span>Oscillazione media annua</span>
+                <strong id="risk-volatility">--</strong>
+                <small>Quanto il valore tende a muoversi nel tempo.</small>
+              </article>
+              <article>
+                <span>Peggiore perdita storica</span>
+                <strong id="risk-drawdown">--</strong>
+                <small id="risk-loss-eur">Traduzione in euro in attesa.</small>
+              </article>
+              <article>
+                <span>Soglia dichiarata</span>
+                <strong id="risk-threshold">--</strong>
+                <small id="risk-threshold-status">Confronto non ancora disponibile.</small>
+              </article>
+              <article>
+                <span>Tempo di recupero</span>
+                <strong id="risk-recovery">--</strong>
+                <small>Se disponibile dalle perdite storiche avanzate.</small>
+              </article>
+              <article>
+                <span>Stress test semplice</span>
+                <strong id="risk-stress">--</strong>
+                <small>Impatto dello scenario selezionato.</small>
+              </article>
+              <article>
+                <span>Cosa monitorare</span>
+                <strong id="risk-watch">In attesa</strong>
+                <small>Il rischio più concreto emerso dai dati.</small>
+              </article>
+            </div>
+          </div>
+
+          <div class="portfolio-comparison result-step" data-step="backtest">
+            <section class="portfolio-lane">
+              <div class="lane-title">
+                <span>Portfolio inserito</span>
+                <strong>Backtest</strong>
+              </div>
+              <div class="metric-grid compact" id="current-backtest-metrics">
+                <article>
+                  <span>Valore finale nella simulazione storica</span>
+                  <strong id="final-value">--</strong>
+                  <small>Dove sarebbe arrivato il capitale nel periodo analizzato. Dato storico simulato, non previsione.</small>
+                </article>
+                <article>
+                  <span>Risultato totale nel periodo analizzato</span>
+                  <strong id="total-return">--</strong>
+                  <small>Variazione complessiva nella simulazione storica.</small>
+                </article>
+                <article>
+                  <span>Crescita media annua storica simulata</span>
+                  <strong id="cagr">--</strong>
+                  <small>Media annua composta calcolata sul periodo storico analizzato.</small>
+                  <button class="explain-button" type="button" aria-expanded="false">Spiegami</button>
+                  <div class="explain-cloud" hidden>È il rendimento medio annuo composto del portafoglio. Ti dice quale crescita annua costante avrebbe prodotto lo stesso risultato finale.</div>
+                </article>
+                <article>
+                  <span>Peggiore perdita storica</span>
+                  <strong id="drawdown">--</strong>
+                  <small>Quanto il capitale sarebbe sceso nel momento peggiore.</small>
+                  <button class="explain-button" type="button" aria-expanded="false">Spiegami</button>
+                  <div class="explain-cloud" hidden>È la perdita massima subita dal portafoglio tra un massimo e il minimo successivo. Serve a capire quanto forte può essere stata la fase negativa peggiore.</div>
+                </article>
+                <article>
+                  <span>Il rendimento compensa il rischio?</span>
+                  <strong id="sharpe">--</strong>
+                  <small>Più è alto, più il rendimento storico ha compensato le oscillazioni.</small>
+                  <button class="explain-button" type="button" aria-expanded="false">Spiegami</button>
+                  <div class="explain-cloud" hidden>Misura quanto rendimento ottieni per ogni unità di rischio. Più è alto, migliore è stato il rapporto tra crescita e oscillazione del portafoglio.</div>
+                </article>
+                <article>
+                  <span>Dati analizzati</span>
+                  <strong id="trading-days">--</strong>
+                  <small>Giornate comuni usate per il calcolo.</small>
+                </article>
+                <article>
+                  <span>Controlli di ribilanciamento</span>
+                  <strong id="rebalance-count">--</strong>
+                  <small>Il ribilanciamento mensile è applicato di default.</small>
+                </article>
+              </div>
+              <div class="intelligence-panel" id="backtest-intelligence-current"></div>
+            </section>
+            <section class="portfolio-lane efficient">
+              <div class="lane-title">
+                <span>Portfolio efficiente</span>
+                <strong>Backtest ottimizzato</strong>
+              </div>
+              <div class="metric-grid compact" id="optimized-backtest-metrics"></div>
+              <div class="intelligence-panel" id="backtest-intelligence-optimized"></div>
+            </section>
+          </div>
+
+          <div class="monitor-results result-step" data-step="tracking" id="monitor-results" aria-label="Monitor portfolio">
+            <div class="table-title">
+              <h3>Manutenzione del portafoglio nel tempo</h3>
+              <p class="section-intro">Il tracking serve a verificare se il portafoglio si è allontanato dai pesi target. Non è trading: è manutenzione della strategia.</p>
+            </div>
+            <div class="tracking-actions">
+              <label>
+                Portfolio da monitorare
+                <select id="saved-portfolios-tracking">
+                  <option value="">Nessun portfolio salvato</option>
+                </select>
+              </label>
+              <button class="primary" type="button" id="monitor-portfolio-tracking">Monitora e ribilancia</button>
+            </div>
+            <div class="monitor-summary">
+              <article><span>Valore attuale</span><strong id="monitor-value">--</strong></article>
+              <article><span>Ribilanciamento</span><strong id="monitor-due">--</strong></article>
+              <article><span>Data prezzi</span><strong id="monitor-date">--</strong></article>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Strumento</th>
+                  <th>Peso attuale</th>
+                  <th>Peso target</th>
+                  <th>Azione</th>
+                  <th>Quantita</th>
+                  <th>Valore trade</th>
+                </tr>
+              </thead>
+              <tbody id="monitor-body">
+                <tr><td colspan="6">Seleziona un portfolio salvato e premi monitora.</td></tr>
+              </tbody>
+            </table>
+            <div id="monitor-note" class="analysis-text"></div>
+          </div>
+
+          <div class="chart-comparison result-step" data-step="backtest">
+            <section class="chart-panel">
+              <div class="chart-title">
+                <span>Portfolio inserito</span>
+                <strong>Backtest storico</strong>
+              </div>
+              <p class="chart-guidance">Guarda quanto il capitale cresce, ma soprattutto quanto scende nelle fasi difficili.</p>
+              <canvas id="equity-chart" width="1000" height="420" aria-label="Curva equity portfolio inserito"></canvas>
+            </section>
+            <section class="chart-panel">
+              <div class="chart-title">
+                <span>Portfolio efficiente</span>
+                <strong>Backtest ottimizzato</strong>
+              </div>
+              <p class="chart-guidance">Confronta se il percorso ottimizzato è più regolare o solo più redditizio.</p>
+              <canvas id="optimized-equity-chart" width="1000" height="420" aria-label="Curva equity portfolio efficiente"></canvas>
+            </section>
+          </div>
+
+          <div class="table-panel result-step contribution-panel" data-step="backtest">
+            <div class="table-title">
+              <h3>Contributo per asset</h3>
+            </div>
+            <div class="table-comparison">
+              <section>
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Contributo storico</strong>
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Strumento</th>
+                      <th>Peso target</th>
+                      <th>Peso finale</th>
+                      <th>Rendimento asset</th>
+                      <th>Contributo</th>
+                    </tr>
+                  </thead>
+                  <tbody id="contribution-body">
+                    <tr>
+                      <td colspan="5">Nessun backtest eseguito.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <section>
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Contributo ottimizzato</strong>
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Strumento</th>
+                      <th>Peso target</th>
+                      <th>Peso finale</th>
+                      <th>Rendimento asset</th>
+                      <th>Contributo</th>
+                    </tr>
+                  </thead>
+                  <tbody id="optimized-contribution-body">
+                    <tr>
+                      <td colspan="5">Portfolio efficiente non ancora calcolato.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+          <div class="monte-carlo-results result-step" data-step="montecarlo" id="monte-carlo-results" aria-label="Risultati Monte Carlo">
+            <div class="table-title">
+              <h3>Quanto è robusto il tuo piano?</h3>
+            </div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Monte Carlo</strong>
+                </div>
+                <div class="intelligence-panel" id="montecarlo-intelligence-current"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Monte Carlo ottimizzato</strong>
+                </div>
+                <div class="monte-carlo-grid compact" id="optimized-monte-carlo-grid"></div>
+                <div class="intelligence-panel" id="montecarlo-intelligence-optimized"></div>
+              </section>
+            </div>
+            <div class="monte-carlo-grid" id="monte-carlo-grid">
+              <article>
+                <span>Valore atteso</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+              <article>
+                <span>Mediana</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+              <article>
+                <span>Percentile 5%</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+              <article>
+                <span>Percentile 95%</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+              <article>
+                <span>Probabilita profitto</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+            </div>
+            <div class="monte-carlo-chart-shell chart-comparison compact-charts">
+              <section>
+                <div class="chart-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Traiettorie future</strong>
+                </div>
+                <p class="chart-guidance">Guarda soprattutto la linea bassa: mostra uno scenario sfavorevole plausibile.</p>
+                <canvas id="monte-carlo-chart" width="1000" height="360" aria-label="Evoluzione Monte Carlo del portfolio inserito"></canvas>
+              </section>
+              <section>
+                <div class="chart-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Traiettorie ottimizzate</strong>
+                </div>
+                <p class="chart-guidance">Verifica se l’ottimizzazione migliora la probabilità senza aumentare troppo l’instabilità.</p>
+                <canvas id="optimized-monte-carlo-chart" width="1000" height="360" aria-label="Evoluzione Monte Carlo del portfolio efficiente"></canvas>
+              </section>
+            </div>
+          </div>
+
+          <div class="stress-testing-results result-step" data-step="scenarios" id="stress-testing-results" aria-label="Risultati stress testing">
+            <div class="table-title">
+              <h3>Cosa succede se il mercato va male?</h3>
+            </div>
+            <section class="scenario-control-panel" aria-label="Selezione scenario crisi simulate">
+              <div>
+                <span>Scenario da simulare</span>
+                <strong>Scegli lo shock prima di calcolare crisi simulate</strong>
+                <p>Questa sezione non parte con l’analisi completa: viene calcolata solo quando selezioni uno scenario e premi il pulsante.</p>
+              </div>
+              <label>
+                Scenario
+                <select id="stress-scenario">
+                  <option>Global Recession</option>
+                  <option>High Inflation</option>
+                  <option>Stagflation</option>
+                  <option>Tech Crash</option>
+                  <option>Credit Crisis</option>
+                  <option>Interest Rate Shock</option>
+                  <option>Commodity Shock</option>
+                  <option>Deflation</option>
+                  <option>Dot-com Crash</option>
+                  <option>2008 Financial Crisis</option>
+                </select>
+              </label>
+              <button class="primary" type="button" id="calculate-stress-scenario">Calcola crisi simulate</button>
+            </section>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Scenario selezionato</strong>
+                </div>
+                <div class="intelligence-panel" id="scenarios-intelligence-current"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Scenario ottimizzato</strong>
+                </div>
+                <div class="stress-testing-grid compact" id="optimized-stress-grid"></div>
+                <div class="intelligence-panel" id="scenarios-intelligence-optimized"></div>
+              </section>
+            </div>
+            <div class="stress-testing-grid" id="stress-summary-grid">
+              <article>
+                <span>Crisi simulate</span>
+                <strong>--</strong>
+                <small>Seleziona uno scenario e premi Calcola crisi simulate.</small>
+              </article>
+            </div>
+            <div class="stress-chart-grid chart-comparison compact-charts">
+              <section>
+                <div class="chart-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Contributo per asset</strong>
+                </div>
+                <p class="chart-guidance">Individua quale strumento pesa di più nello shock scelto.</p>
+                <canvas id="stress-asset-chart" width="900" height="260" aria-label="Contributo stress per asset del portfolio inserito"></canvas>
+              </section>
+              <section>
+                <div class="chart-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Contributo per asset</strong>
+                </div>
+                <p class="chart-guidance">Controlla se il portfolio efficiente riduce la vulnerabilità degli asset principali.</p>
+                <canvas id="optimized-stress-asset-chart" width="900" height="260" aria-label="Contributo stress per asset del portfolio efficiente"></canvas>
+              </section>
+              <section>
+                <div class="chart-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Contributo per fattore</strong>
+                </div>
+                <p class="chart-guidance">Qui vedi quali fattori economici guidano l’impatto dello scenario.</p>
+                <canvas id="stress-factor-chart" width="900" height="260" aria-label="Contributo stress per fattore del portfolio inserito"></canvas>
+              </section>
+              <section>
+                <div class="chart-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Contributo per fattore</strong>
+                </div>
+                <p class="chart-guidance">Il confronto serve a capire se il rischio è distribuito meglio tra i fattori.</p>
+                <canvas id="optimized-stress-factor-chart" width="900" height="260" aria-label="Contributo stress per fattore del portfolio efficiente"></canvas>
+              </section>
+            </div>
+            <div class="table-title frontier-table-title">
+              <h3>Beta matrix</h3>
+            </div>
+            <table>
+              <thead id="stress-beta-head"></thead>
+              <tbody id="stress-beta-body">
+                <tr><td>Seleziona uno scenario e premi Calcola crisi simulate.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="efficient-frontier-results result-step" data-step="frontier" id="efficient-frontier-results" aria-label="Risultati efficient frontier">
+            <div class="table-title explain-title">
+              <h3>Stai assumendo più rischio del necessario?</h3>
+              <button class="explain-button" type="button" aria-expanded="false">Spiegami</button>
+            <div class="explain-cloud" hidden>Questa analisi verifica se, usando gli stessi strumenti, esiste una combinazione con un rapporto rischio-rendimento più efficiente.</div>
+            </div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Situazione attuale</strong>
+                </div>
+                <div class="efficient-frontier-grid compact" id="current-frontier-grid"></div>
+                <div class="intelligence-panel" id="frontier-intelligence-current"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Alternativa ottimizzata</strong>
+                </div>
+                <div class="intelligence-panel" id="frontier-intelligence-optimized"></div>
+              </section>
+            </div>
+            <div class="efficient-frontier-grid" id="frontier-summary-grid">
+              <article>
+                <span>Miglior rapporto rischio-rendimento</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+              <article>
+                <span>Rendimento annuo</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+              <article>
+                <span>Volatilita annua</span>
+                <strong>--</strong>
+                <small>In attesa</small>
+              </article>
+            </div>
+            <div class="comparison-delta-card" id="frontier-delta-card">
+              <span>Differenza principale</span>
+              <strong>Calcola la frontiera per confrontare rischio e rendimento.</strong>
+              <small>Qui apparirà il delta tra portfolio inserito e portfolio efficiente.</small>
+            </div>
+            <div class="frontier-chart-shell">
+              <p class="chart-guidance">Guarda se il punto blu è distante dalla curva: più è distante, più potrebbe esserci spazio di miglioramento.</p>
+              <svg id="frontier-chart" viewBox="0 0 860 420" role="img" aria-label="Grafico efficient frontier"></svg>
+              <div class="frontier-legend">
+                <span><i class="legend-dot efficient"></i>Portfolio efficiente</span>
+                <span><i class="legend-dot current"></i>Portfolio inserito</span>
+              </div>
+            </div>
+            <div class="table-title frontier-table-title">
+              <h3>Portfolio ottimale</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Strumento</th>
+                  <th>Peso migliore rapporto rischio-rendimento</th>
+                  <th>Min</th>
+                  <th>Max</th>
+                </tr>
+              </thead>
+              <tbody id="frontier-weights-body">
+                <tr>
+                  <td colspan="4">Nessun calcolo eseguito.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="advanced-results result-step" data-step="factors" id="fama-french-results" aria-label="Fama-French factor analysis">
+            <div class="table-title">
+              <h3>Da cosa dipende davvero il portafoglio?</h3>
+            </div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Esposizioni fattoriali</strong>
+                </div>
+                <div class="advanced-grid" id="fama-current-summary"></div>
+                <div class="intelligence-panel" id="fama-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Esposizioni ottimizzate</strong>
+                </div>
+                <div class="advanced-grid" id="fama-optimized-summary"></div>
+                <div class="intelligence-panel" id="fama-optimized-comment"></div>
+              </section>
+            </div>
+            <div class="chart-comparison compact-charts">
+              <section class="chart-panel">
+                <div class="chart-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Beta factor exposures</strong>
+                </div>
+                <p class="chart-guidance">Guarda quali fattori spiegano di più il comportamento storico: una barra negativa indica che il portafoglio tendeva a muoversi in senso opposto a quel fattore.</p>
+                <canvas id="fama-current-chart" width="900" height="300" aria-label="Beta Fama-French portfolio inserito"></canvas>
+              </section>
+              <section class="chart-panel">
+                <div class="chart-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Beta factor exposures</strong>
+                </div>
+                <p class="chart-guidance">Confronta se l’ottimizzazione cambia le dipendenze principali: beta sotto zero significa sensibilità inversa rispetto al fattore.</p>
+                <canvas id="fama-optimized-chart" width="900" height="300" aria-label="Beta Fama-French portfolio efficiente"></canvas>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results result-step" data-step="geography" id="geography-results" aria-label="Mappa esposizione geografica">
+            <div class="table-title">
+              <h3>Dove sembra esposto il tuo portafoglio?</h3>
+            </div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Continenti e stati</strong>
+                </div>
+                <div class="advanced-grid" id="geo-current-summary"></div>
+                <div class="intelligence-panel" id="geo-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Continenti e stati ottimizzati</strong>
+                </div>
+                <div class="advanced-grid" id="geo-optimized-summary"></div>
+                <div class="intelligence-panel" id="geo-optimized-comment"></div>
+              </section>
+            </div>
+            <div class="chart-comparison compact-charts">
+              <section class="chart-panel">
+                <div class="chart-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Esposizione per continente</strong>
+                </div>
+                <canvas id="geo-current-chart" width="900" height="300" aria-label="Geografia portfolio inserito"></canvas>
+              </section>
+              <section class="chart-panel">
+                <div class="chart-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Esposizione per continente</strong>
+                </div>
+                <canvas id="geo-optimized-chart" width="900" height="300" aria-label="Geografia portfolio efficiente"></canvas>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results result-step" data-step="rolling" id="rolling-results" aria-label="Rendimenti rolling e rischio negativo">
+            <div class="table-title rolling-heading">
+              <h3>Il risultato è stato stabile nel tempo?</h3>
+              <label class="inline-select" for="rolling-window-select">
+                Orizzonte rolling
+                <select id="rolling-window-select">
+                  <option value="1y" selected>1 anno</option>
+                  <option value="2y">2 anni</option>
+                  <option value="6m">6 mesi</option>
+                </select>
+              </label>
+            </div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Rolling metrics</strong>
+                </div>
+                <div class="advanced-grid" id="rolling-current-summary"></div>
+                <div class="intelligence-panel" id="rolling-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Rolling metrics ottimizzate</strong>
+                </div>
+                <div class="advanced-grid" id="rolling-optimized-summary"></div>
+                <div class="intelligence-panel" id="rolling-optimized-comment"></div>
+              </section>
+            </div>
+            <div class="chart-comparison compact-charts">
+              <section class="chart-panel">
+                <div class="chart-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Rolling return</strong>
+                </div>
+                <canvas id="rolling-current-chart" width="900" height="300" aria-label="Rolling return portfolio inserito"></canvas>
+              </section>
+              <section class="chart-panel">
+                <div class="chart-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Rolling return</strong>
+                </div>
+                <canvas id="rolling-optimized-chart" width="900" height="300" aria-label="Rolling return portfolio efficiente"></canvas>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results result-step" data-step="correlation" id="correlation-results" aria-label="Matrice di correlazione avanzata">
+            <div class="table-title"><h3>Sei davvero diversificato?</h3></div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title"><span>Portfolio inserito</span><strong>Diversificazione reale</strong></div>
+                <div class="advanced-grid" id="correlation-current-summary"></div>
+                <div class="intelligence-panel" id="correlation-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title"><span>Portfolio efficiente</span><strong>Diversificazione ottimizzata</strong></div>
+                <div class="advanced-grid" id="correlation-optimized-summary"></div>
+                <div class="intelligence-panel" id="correlation-optimized-comment"></div>
+              </section>
+            </div>
+            <div class="table-comparison compact-tables">
+              <section class="table-panel">
+                <div class="chart-title"><span>Portfolio inserito</span><strong>Matrice di correlazione</strong></div>
+                <table><thead id="correlation-current-head"></thead><tbody id="correlation-current-body"><tr><td>Matrice non calcolata.</td></tr></tbody></table>
+              </section>
+              <section class="table-panel">
+                <div class="chart-title"><span>Portfolio efficiente</span><strong>Matrice di correlazione confronto</strong></div>
+                <table><thead id="correlation-optimized-head"></thead><tbody id="correlation-optimized-body"><tr><td>Matrice non calcolata.</td></tr></tbody></table>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results benchmark-results-shell result-step" data-step="benchmark" id="benchmark-results" aria-label="Benchmark comparison">
+            <div class="benchmark-section-header">
+              <h3>Benchmark intelligente</h3>
+              <p>QuantInvest costruisce un benchmark coerente con la composizione del tuo portfolio, usando azioni, obbligazioni, oro e commodity.</p>
+            </div>
+            <div class="benchmark-summary-grid" id="benchmark-summary"></div>
+            <div class="chart-comparison compact-charts">
+              <section class="chart-panel">
+                <div class="chart-title"><span>Portfolio inserito</span><strong>Backtest</strong></div>
+                <canvas id="benchmark-portfolio-chart" width="900" height="300" aria-label="Portfolio benchmark comparison"></canvas>
+              </section>
+              <section class="chart-panel">
+                <div class="chart-title"><span>Benchmark</span><strong>Smart benchmark</strong></div>
+                <canvas id="benchmark-chart" width="900" height="300" aria-label="Benchmark intelligente"></canvas>
+              </section>
+            </div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title"><span>Portfolio inserito</span><strong>Lettura del confronto</strong></div>
+                <div class="intelligence-panel" id="benchmark-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title"><span>Benchmark intelligente</span><strong>Confronto base</strong></div>
+                <div class="intelligence-panel" id="benchmark-smart-comment"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results result-step" data-step="pac" id="pac-results" aria-label="PAC Analysis avanzata">
+            <div class="table-title"><h3>Quanto può crescere il tuo piano di accumulo?</h3></div>
+            <section class="chart-panel pac-comparison-chart-panel">
+              <div class="chart-title"><span>Confronto PAC</span><strong>Portafoglio inserito vs confronto attivo</strong></div>
+              <canvas id="pac-comparison-chart" width="900" height="300" aria-label="Confronto grafico PAC"></canvas>
+              <p class="chart-guidance">Il grafico confronta l'evoluzione del PAC sul portafoglio inserito e sul portafoglio di confronto attivo.</p>
+            </section>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title"><span>Portfolio inserito</span><strong>Piano di accumulo</strong></div>
+                <div class="advanced-grid" id="pac-current-summary"></div>
+                <div class="intelligence-panel" id="pac-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title"><span>Portfolio efficiente</span><strong>PAC ottimizzato</strong></div>
+                <div class="advanced-grid" id="pac-optimized-summary"></div>
+                <div class="intelligence-panel" id="pac-optimized-comment"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results result-step" data-step="drawdown" id="drawdown-analysis-results" aria-label="Peak to trough e recovery">
+            <div class="table-title"><h3>Quanto potresti vedere scendere il capitale?</h3></div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title"><span>Portfolio inserito</span><strong>Perdita temporanea storica</strong></div>
+                <div class="advanced-grid" id="drawdown-current-summary"></div>
+                <div class="intelligence-panel" id="drawdown-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title"><span>Portfolio efficiente</span><strong>Perdita temporanea ottimizzata</strong></div>
+                <div class="advanced-grid" id="drawdown-optimized-summary"></div>
+                <div class="intelligence-panel" id="drawdown-optimized-comment"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results result-step" data-step="factorrisk" id="factor-risk-results" aria-label="Factor risk decomposition">
+            <div class="table-title"><h3>Quali rischi guidano il portafoglio?</h3></div>
+            <section class="scenario-control-panel" aria-label="Selezione scenario rischi nascosti">
+              <div>
+                <span>Scenario da testare</span>
+                <strong>Scegli lo shock prima di calcolare i rischi nascosti</strong>
+                <p>Questa sezione non parte con l’analisi completa: viene calcolata solo quando selezioni uno scenario e premi il pulsante.</p>
+              </div>
+              <label>
+                Scenario
+                <select id="hidden-risk-scenario">
+                  <option>Global Recession</option>
+                  <option>High Inflation</option>
+                  <option>Stagflation</option>
+                  <option>Tech Crash</option>
+                  <option>Credit Crisis</option>
+                  <option>Interest Rate Shock</option>
+                  <option>Commodity Shock</option>
+                  <option>Deflation</option>
+                  <option>Dot-com Crash</option>
+                  <option>2008 Financial Crisis</option>
+                </select>
+              </label>
+              <button class="primary" type="button" id="run-hidden-risk">Calcola rischi nascosti</button>
+            </section>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title"><span>Portfolio inserito</span><strong>Rischio fattoriale</strong></div>
+                <div class="advanced-grid" id="factor-risk-current-summary"></div>
+                <div class="intelligence-panel" id="factor-risk-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title"><span>Portfolio efficiente</span><strong>Rischio fattoriale ottimizzato</strong></div>
+                <div class="advanced-grid" id="factor-risk-optimized-summary"></div>
+                <div class="intelligence-panel" id="factor-risk-optimized-comment"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="advanced-results result-step" data-step="scenarioadvanced" id="scenario-comparison-results" aria-label="Advanced scenario comparison">
+            <div class="table-title"><h3>Quale scenario pesa di più?</h3></div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title"><span>Portfolio inserito</span><strong>Tutti gli scenari</strong></div>
+                <div class="advanced-grid" id="scenario-comparison-current-summary"></div>
+                <div class="intelligence-panel" id="scenario-comparison-current-comment"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title"><span>Portfolio efficiente</span><strong>Tutti gli scenari ottimizzati</strong></div>
+                <div class="advanced-grid" id="scenario-comparison-optimized-summary"></div>
+                <div class="intelligence-panel" id="scenario-comparison-optimized-comment"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="analysis-results result-step" data-step="analysis" id="analysis-results" aria-label="Analisi finale">
+            <div class="table-title">
+              <h3>Cosa monitorare da qui in avanti</h3>
+              <p class="section-intro">Questa non è una lista di acquisto o vendita: è una manutenzione prudente del portafoglio basata sui dati calcolati.</p>
+            </div>
+            <section class="final-verdict-card" id="final-verdict-card" hidden aria-label="Verdetto sintetico">
+              <span>Verdetto sintetico</span>
+              <h3 id="final-verdict-title">Analisi in attesa</h3>
+              <p id="final-verdict-summary">Esegui l'analisi completa per capire coerenza, rischio principale e prossimo passo.</p>
+              <div class="final-verdict-points">
+                <small><b>Rischio:</b> <em id="final-verdict-risk">In attesa</em></small>
+                <small><b>Punto forte:</b> <em id="final-verdict-strength">In attesa</em></small>
+                <small><b>Prossimo passo:</b> <em id="final-verdict-next">In attesa</em></small>
+              </div>
+            </section>
+            <div class="action-dashboard" id="action-dashboard">
+              <article>
+                <span>Rischio da monitorare</span>
+                <strong id="action-risk">In attesa</strong>
+                <small>La fragilità principale da ricontrollare nel tempo.</small>
+              </article>
+              <article>
+                <span>Componente dominante</span>
+                <strong id="action-overweight">In attesa</strong>
+                <small>Serve a capire se il portafoglio dipende troppo da una sola area.</small>
+              </article>
+              <article>
+                <span>Scenario più critico</span>
+                <strong id="action-scenario">In attesa</strong>
+                <small>Lo shock da osservare nelle prossime analisi.</small>
+              </article>
+              <article>
+                <span>Prossimo controllo</span>
+                <strong id="action-next-check">Mensile</strong>
+                <small>Il ribilanciamento resta una manutenzione, non trading.</small>
+              </article>
+            </div>
+            <div class="score-comparison-summary" id="analysis-score-comparison" hidden></div>
+            <div class="portfolio-comparison">
+              <section class="portfolio-lane">
+                <div class="lane-title">
+                  <span>Portfolio inserito</span>
+                  <strong>Analisi finale</strong>
+                </div>
+                <div class="intelligence-panel" id="analysis-intelligence-current"></div>
+              </section>
+              <section class="portfolio-lane efficient">
+                <div class="lane-title">
+                  <span>Portfolio efficiente</span>
+                  <strong>Analisi ottimizzata</strong>
+                </div>
+                <div class="intelligence-panel" id="analysis-intelligence-optimized"></div>
+              </section>
+            </div>
+            <p id="analysis-text" class="analysis-text">Esegui l'analisi completa per ottenere il giudizio finale.</p>
+            <section class="standard-recommendation-panel" id="standard-benchmark-analysis" hidden aria-label="Benchmark standard QuantInvest">
+              <div class="table-title compact">
+                <h3>Benchmark standard QuantInvest</h3>
+                <p class="section-intro">Confronto educativo scelto all’inizio: resta separato dal portafoglio ottimale.</p>
+              </div>
+              <div id="standard-benchmark-analysis-content"></div>
+            </section>
+            <section class="standard-recommendation-panel" id="standard-portfolio-recommendation" hidden aria-label="Portfolio standard suggerito">
+              <div class="table-title compact">
+                <h3>Portfolio standard suggerito</h3>
+                <p class="section-intro">Benchmark educativo QuantInvest, separato dal portafoglio inserito e dal portafoglio ottimale.</p>
+              </div>
+              <div id="standard-portfolio-recommendation-content"></div>
+            </section>
+          </div>
+
+          <div class="analysis-results result-step improvement-plan-section" data-step="improvement" id="improvement-plan-results" aria-label="Piano di miglioramento del portafoglio">
+            <div class="table-title">
+              <h3>Piano di miglioramento del portafoglio</h3>
+              <p class="section-intro">Trasforma l'analisi in azioni simulate per migliorare rischio, diversificazione e coerenza con il tuo profilo.</p>
+            </div>
+            <div id="improvement-plan-content" class="improvement-plan-content">
+              <div class="recommendations-empty">Esegui l'analisi completa per generare il piano di miglioramento.</div>
+            </div>
+          </div>
+
+        </section>
+      </section>
+      <nav class="mobile-step-nav" id="mobile-step-nav" aria-label="Navigazione rapida mobile"></nav>
+      <aside class="technical-drawer" id="technical-drawer" aria-hidden="true" aria-label="Dettaglio tecnico">
+        <div class="technical-drawer-backdrop" data-close-drawer></div>
+        <section class="technical-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="technical-drawer-title">
+          <button class="icon-button technical-drawer-close" type="button" data-close-drawer aria-label="Chiudi dettaglio tecnico">×</button>
+          <span>Dettaglio tecnico</span>
+          <h3 id="technical-drawer-title">Spiegazione</h3>
+          <p id="technical-drawer-body">Seleziona una metrica per vedere il dettaglio.</p>
+        </section>
+      </aside>
+    </main>
+  <script src="/charts-core.js?v=20260624-02"></script>
+  <script src="/app.js?v=20260625-20"></script>
+  </body>
+</html>

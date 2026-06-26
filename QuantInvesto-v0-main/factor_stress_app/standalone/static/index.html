@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Factor Stress Standalone</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="controls">
+        <p class="eyebrow">No dependencies</p>
+        <h1>Factor Stress Dashboard</h1>
+
+        <section class="panel">
+          <h2>Portafoglio</h2>
+          <div id="assets"></div>
+          <button id="add-asset" type="button">Aggiungi asset</button>
+        </section>
+
+        <section class="panel">
+          <h2>Dati</h2>
+          <label>Data inizio <input id="start" type="date" value="2021-01-01" /></label>
+          <label>Data fine <input id="end" type="date" value="2024-12-31" /></label>
+          <label class="check"><input id="demo" type="checkbox" checked /> Usa dati demo</label>
+        </section>
+
+        <section class="panel">
+          <h2>Scenario</h2>
+          <select id="scenario">
+            <option>Global Recession</option>
+            <option>High Inflation</option>
+            <option>Stagflation</option>
+            <option>Tech Crash</option>
+            <option>Credit Crisis</option>
+            <option>Interest Rate Shock</option>
+            <option>Commodity Shock</option>
+            <option>Deflation</option>
+            <option>Dot-com Crash</option>
+            <option>2008 Financial Crisis</option>
+          </select>
+          <button id="run-scenario" type="button">Applica scenario</button>
+          <button id="run-custom" type="button">Applica shock slider</button>
+        </section>
+
+        <section class="panel">
+          <h2>Azioni</h2>
+          <button id="run-factor" type="button">Factor analysis</button>
+          <button id="run-mc" type="button">Monte Carlo 10.000</button>
+          <p id="status">Pronto</p>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <section class="panel">
+          <h2>Interactive Shock Sliders</h2>
+          <div id="sliders"></div>
+        </section>
+
+        <section class="summary">
+          <article><span>Expected portfolio return</span><strong id="expected">--</strong></article>
+          <article><span>Best hedge</span><strong id="best">--</strong></article>
+          <article><span>Worst contributor</span><strong id="worst">--</strong></article>
+          <article><span>Monte Carlo loss probability</span><strong id="loss">--</strong></article>
+        </section>
+
+        <section class="panel">
+          <h2>Portfolio impact chart</h2>
+          <canvas id="asset-chart" width="900" height="260"></canvas>
+        </section>
+
+        <section class="panel">
+          <h2>Factor contribution chart</h2>
+          <canvas id="factor-chart" width="900" height="260"></canvas>
+        </section>
+
+        <section class="panel">
+          <h2>Factor Exposure Dashboard</h2>
+          <div class="table-wrap"><table id="exposure-table"></table></div>
+        </section>
+
+        <section class="panel">
+          <h2>Heatmap beta matrix</h2>
+          <div class="table-wrap"><table id="heatmap"></table></div>
+        </section>
+
+        <section class="panel">
+          <h2>Monte Carlo distribution</h2>
+          <canvas id="mc-chart" width="900" height="260"></canvas>
+        </section>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
+
