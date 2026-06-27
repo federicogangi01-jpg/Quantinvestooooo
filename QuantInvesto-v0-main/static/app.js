@@ -1058,6 +1058,46 @@ function updateProfileSummary() {
   summary.textContent = summaryText;
   if (formCompletion) formCompletion.textContent = completionText;
   if (formSummary) formSummary.textContent = summaryText;
+
+  // Live "Il tuo profilo in sintesi" snapshot card (presentation only).
+  const riskLevelLabels = { conservative: "Prudente", balanced: "Bilanciato", aggressive: "Aggressivo" };
+  const riskMeterWidth = { conservative: 28, balanced: 60, aggressive: 92 };
+  const goalSnapshotLabels = {
+    capital_growth: "Crescita del capitale",
+    capital_preservation: "Protezione del capitale",
+    income: "Entrate periodiche",
+    retirement: "Pensione / lungo periodo",
+    home: "Casa o spesa futura",
+  };
+  const setText = (id, value) => {
+    const node = document.querySelector(id);
+    if (node) node.textContent = value;
+  };
+  const lossEur = profile.capital > 0 ? euro.format(Math.round(profile.capital * profile.maxTemporaryLoss)) : "--";
+  setText("#profile-snapshot-risk", riskLevelLabels[profile.riskPreference] || "Bilanciato");
+  setText("#profile-snapshot-horizon", `${profile.horizonYears} anni`);
+  setText("#profile-snapshot-loss-eur", lossEur);
+  setText("#profile-snapshot-goal", goalSnapshotLabels[profile.goalPriority] || "Crescita del capitale");
+  setText("#profile-snapshot-pac", profile.monthlyPac > 0 ? `${euro.format(profile.monthlyPac)}/mese` : "Nessuno");
+
+  const meter = document.querySelector("#profile-snapshot-risk-meter");
+  if (meter) {
+    meter.style.width = `${riskMeterWidth[profile.riskPreference] || 60}%`;
+    meter.dataset.risk = profile.riskPreference || "balanced";
+  }
+
+  const stateBadge = document.querySelector("#profile-snapshot-state");
+  if (stateBadge) {
+    stateBadge.textContent = isComplete ? "Pronto" : "Da completare";
+    stateBadge.dataset.state = isComplete ? "ready" : "pending";
+  }
+
+  const lossHint = document.querySelector("#max-loss-eur-hint");
+  if (lossHint) {
+    lossHint.textContent = profile.capital > 0
+      ? `Sul capitale indicato significa circa ${lossEur} di calo temporaneo.`
+      : "Inserisci il capitale per vedere la perdita in euro.";
+  }
 }
 
 function buildPortfolioPayload() {
