@@ -1,0 +1,59 @@
+{
+  "instruments": {
+    "US0378331005": {
+      "input": "US0378331005",
+      "figi": "BBG000B9XRY4",
+      "isin": "US0378331005",
+      "instrumentId": "US0378331005",
+      "ticker": "AAPL",
+      "exchange": "US",
+      "eodhdExchange": "US",
+      "currency": "",
+      "name": "APPLE INC",
+      "securityType": "Common Stock",
+      "marketSector": "Equity",
+      "eodhdCode": "AAPL.US",
+      "resolvedAt": "2026-06-27T10:21:26+00:00",
+      "assetClass": "equity",
+      "assetClassLabel": "Azioni",
+      "eodhdResolutionSource": "openfigi_exchange_mapping"
+    },
+    "US5949181045": {
+      "input": "US5949181045",
+      "figi": "BBG000BPH459",
+      "isin": "US5949181045",
+      "instrumentId": "US5949181045",
+      "ticker": "MSFT",
+      "exchange": "US",
+      "eodhdExchange": "US",
+      "currency": "",
+      "name": "MICROSOFT CORP",
+      "securityType": "Common Stock",
+      "marketSector": "Equity",
+      "eodhdCode": "MSFT.US",
+      "resolvedAt": "2026-06-27T10:21:27+00:00",
+      "assetClass": "equity",
+      "assetClassLabel": "Azioni",
+      "eodhdResolutionSource": "openfigi_exchange_mapping"
+    },
+    "US78462F1030": {
+      "input": "US78462F1030",
+      "figi": "BBG000BDTBL9",
+      "isin": "US78462F1030",
+      "instrumentId": "US78462F1030",
+      "ticker": "SPY",
+      "exchange": "US",
+      "eodhdExchange": "US",
+      "currency": "",
+      "name": "SS SPDR S&P 500 ETF TRUST-US",
+      "securityType": "ETP",
+      "marketSector": "Equity",
+      "eodhdCode": "SPY.US",
+      "resolvedAt": "2026-06-27T10:21:27+00:00",
+      "assetClass": "equity",
+      "assetClassLabel": "Azioni",
+      "eodhdResolutionSource": "openfigi_exchange_mapping"
+    }
+  },
+  "prices": {}
+}
