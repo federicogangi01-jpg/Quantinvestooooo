@@ -379,65 +379,106 @@
             <span data-flow-step="tracking">Tracking</span>
           </div>
 
-          <div class="setup-guide result-step active" data-step="profile" aria-label="Guida profilo investitore">
-            <div class="step-progress" aria-label="Avanzamento configurazione">
-              <span class="is-current">Profilo</span>
-              <span>Strumenti</span>
-              <span>Analisi</span>
-              <span>Diagnosi</span>
+          <div class="setup-guide cfg-guide result-step active" data-step="profile" aria-label="Guida profilo investitore">
+            <div class="step-progress cfg-stepper" aria-label="Avanzamento configurazione">
+              <span class="is-current" data-step-index="1">Profilo</span>
+              <span data-step-index="2">Strumenti</span>
+              <span data-step-index="3">Analisi</span>
+              <span data-step-index="4">Diagnosi</span>
             </div>
-            <section class="empty-state-guide">
-              <div>
-                <p class="eyebrow">Step 1 di 3</p>
-                <h3>Inserisci il tuo profilo prima dei numeri</h3>
-                <p>Capitale, orizzonte e rischio servono a leggere i risultati nel modo giusto: lo stesso portafoglio può essere adatto a un investitore e troppo instabile per un altro.</p>
+            <section class="empty-state-guide cfg-shell">
+              <header class="cfg-hero">
+                <div class="cfg-hero-text">
+                  <p class="eyebrow">Step 1 di 3 · Gratis<button type="button" class="cfg-info" data-tip="Il profilo non viene giudicato: serve solo a interpretare i numeri dell'analisi in base alla tua situazione e alla tua tolleranza al rischio." aria-label="Spiegami questa sezione">i</button></p>
+                  <h3>Prima di tutto, capiamo che investitore sei</h3>
+                  <p>Lo stesso portafoglio può essere perfetto per una persona e troppo rischioso per un’altra. Questo profilo è la chiave con cui leggeremo ogni numero della tua analisi.</p>
+                </div>
+                <span class="cfg-hero-badge">Profilo</span>
+              </header>
+
+              <div class="cfg-pillars" aria-label="Perché questo profilo conta">
+                <article>
+                  <span class="cfg-pillar-ic" aria-hidden="true">€</span>
+                  <strong>Capitale &amp; orizzonte</strong>
+                  <small>Quanto investi e per quanto tempo decide quanta oscillazione puoi davvero assorbire.</small>
+                </article>
+                <article>
+                  <span class="cfg-pillar-ic" aria-hidden="true">◎</span>
+                  <strong>Obiettivo</strong>
+                  <small>Crescere, proteggere o ottenere entrate: cambia cosa significa “buono” per te.</small>
+                </article>
+                <article>
+                  <span class="cfg-pillar-ic" aria-hidden="true">≈</span>
+                  <strong>Tolleranza al rischio</strong>
+                  <small>La perdita che reggi senza abbandonare il piano nei momenti difficili.</small>
+                </article>
               </div>
-              <ul class="guide-checklist">
+
+              <ul class="guide-checklist cfg-checklist">
                 <li>Definisci capitale e orizzonte temporale.</li>
                 <li>Scegli una propensione al rischio realistica.</li>
                 <li>Scrivi l’obiettivo in parole semplici.</li>
               </ul>
-              <div class="profile-output">
-                <span>Output step</span>
+
+              <div class="right-form-host" id="profile-form-host" aria-label="Domande profilo investitore"></div>
+
+              <div class="profile-output cfg-insight" data-tone="info">
+                <span class="cfg-insight-label">Il tuo profilo, in sintesi</span>
                 <strong id="profile-completion">Profilo in compilazione</strong>
                 <small id="profile-summary">Rischio dichiarato e orizzonte appariranno qui.</small>
+                <p class="cfg-insight-meaning">Cosa significa per te: useremo questi dati per dirti se il rischio del portafoglio è coerente con quello che hai dichiarato.</p>
               </div>
-              <div class="guided-action-row">
+
+              <div class="guided-action-row cfg-cta">
                 <button class="primary next-step" type="button" data-next-step="portfolio">Continua al portafoglio</button>
                 <small>Puoi sempre tornare a modificare il profilo dalla navigazione.</small>
               </div>
-              <div class="right-form-host" id="profile-form-host" aria-label="Domande profilo investitore"></div>
+
+              <p class="cfg-disclaimer">Analisi educativa e informativa. Non costituisce consulenza finanziaria personalizzata.</p>
             </section>
           </div>
 
-          <div class="setup-guide result-step" data-step="portfolio" aria-label="Guida inserimento portfolio">
-            <div class="step-progress" aria-label="Avanzamento configurazione">
-              <span>Profilo</span>
-              <span class="is-current">Strumenti</span>
-              <span>Analisi</span>
-              <span>Diagnosi</span>
+          <div class="setup-guide cfg-guide result-step" data-step="portfolio" aria-label="Guida inserimento portfolio">
+            <div class="step-progress cfg-stepper" aria-label="Avanzamento configurazione">
+              <span data-step-index="1">Profilo</span>
+              <span class="is-current" data-step-index="2">Strumenti</span>
+              <span data-step-index="3">Analisi</span>
+              <span data-step-index="4">Diagnosi</span>
             </div>
-            <section class="empty-state-guide">
-              <div>
-                <p class="eyebrow">Step 2 di 3</p>
-                <h3>Costruisci il portafoglio da analizzare</h3>
-                <p>Cerca gli strumenti per nome e seleziona il risultato corretto: l’app userà l’ISIN dietro le quinte per scaricare i prezzi storici senza ambiguità.</p>
-              </div>
-              <div class="example-portfolio">
-                <span>Esempio</span>
+            <section class="empty-state-guide cfg-shell">
+              <header class="cfg-hero">
+                <div class="cfg-hero-text">
+                  <p class="eyebrow">Step 2 di 3 · Gratis</p>
+                  <h3>Costruisci il portafoglio da analizzare</h3>
+                  <p>Cerca gli strumenti per nome e seleziona il risultato corretto: useremo l’ISIN dietro le quinte per scaricare i prezzi storici senza ambiguità.</p>
+                </div>
+                <span class="cfg-hero-badge">Portafoglio</span>
+              </header>
+
+              <div class="example-portfolio cfg-example">
+                <span>Esempio di partenza</span>
                 <strong>Azionario globale 60% · Obbligazioni 30% · Oro 10%</strong>
-                <small>Puoi salvare il portfolio e monitorarlo in futuro con controllo mensile di ribilanciamento.</small>
+                <small>Puoi salvarlo e monitorarlo in futuro con un controllo mensile di ribilanciamento.</small>
               </div>
-              <div class="portfolio-action-note">
-                <span>Quando hai inserito strumenti e pesi</span>
-                <strong>Avvia l'analisi completa dal pulsante verde qui sotto.</strong>
-              </div>
-              <div class="portfolio-readiness" id="portfolio-readiness" aria-live="polite">
-                <span>Prontezza analisi</span>
+
+              <div class="right-form-host portfolio-host" id="portfolio-form-host" aria-label="Inserimento strumenti e impostazioni portfolio"></div>
+
+              <div class="portfolio-readiness cfg-insight" id="portfolio-readiness" aria-live="polite">
+                <span class="cfg-insight-label">Prontezza analisi</span>
                 <strong>Completa strumenti e pesi</strong>
                 <small>Il totale deve essere 100% e ogni strumento deve essere riconosciuto.</small>
               </div>
-              <div class="right-form-host portfolio-host" id="portfolio-form-host" aria-label="Inserimento strumenti e impostazioni portfolio"></div>
+
+              <div class="cfg-tips" aria-label="Cosa controllare prima dell'analisi">
+                <p class="cfg-tips-title">Dove prestare attenzione</p>
+                <ul>
+                  <li><strong>Somma pesi al 100%.</strong> L’analisi parte solo con il portafoglio completo.</li>
+                  <li><strong>Concentrazione.</strong> Se un singolo strumento o una sola asset class pesa troppo, il rischio sale.</li>
+                  <li><strong>Strumenti riconosciuti.</strong> Seleziona dalla ricerca per salvare l’ISIN corretto ed evitare ambiguità.</li>
+                </ul>
+              </div>
+
+              <p class="cfg-disclaimer">Fonte reale: OpenFIGI per gli strumenti, EODHD per i prezzi storici. I dati demo sono sintetici e non rappresentano performance reali.</p>
             </section>
           </div>
 
