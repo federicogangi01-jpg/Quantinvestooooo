@@ -448,7 +448,7 @@
             <section class="empty-state-guide cfg-shell">
               <header class="cfg-hero">
                 <div class="cfg-hero-text">
-                  <p class="eyebrow">Step 2 di 3 · Gratis</p>
+                  <p class="eyebrow">Step 2 di 3 · Gratis<button type="button" class="cfg-info" data-tip="Inserisci ogni strumento con il suo peso. La somma deve fare 100%: così l'analisi riflette esattamente come è distribuito il tuo capitale." aria-label="Spiegami questa sezione">i</button></p>
                   <h3>Costruisci il portafoglio da analizzare</h3>
                   <p>Cerca gli strumenti per nome e seleziona il risultato corretto: useremo l’ISIN dietro le quinte per scaricare i prezzi storici senza ambiguità.</p>
                 </div>
@@ -482,10 +482,10 @@
             </section>
           </div>
 
-          <div class="diagnostic-dashboard result-step" data-step="diagnosis" id="diagnostic-dashboard" aria-label="Dashboard diagnostica">
-            <section class="diagnostic-hero">
-              <div>
-                <p class="eyebrow">Sintesi in 30 secondi</p>
+          <div class="diagnostic-dashboard cfg-guide cfg-result result-step" data-step="diagnosis" id="diagnostic-dashboard" aria-label="Dashboard diagnostica">
+            <section class="diagnostic-hero cfg-hero">
+              <div class="cfg-hero-text">
+                <p class="eyebrow">Step 3 di 3 · Gratis · Sintesi in 30 secondi<button type="button" class="cfg-info" data-tip="È la fotografia d'insieme del tuo portafoglio: un punteggio di salute, il rischio principale e la coerenza con il profilo che hai dichiarato. Nessun consiglio di acquisto o vendita." aria-label="Spiegami questa sezione">i</button></p>
                 <h3 id="diagnostic-title">Il check-up è pronto per essere calcolato</h3>
                 <p id="diagnostic-summary">Esegui l’analisi completa per vedere prima diagnosi, rischio principale e possibile miglioramento. I dati tecnici restano sotto, come approfondimento.</p>
               </div>
@@ -528,14 +528,22 @@
                 <small>Controllo suggerito ogni mese nel tracking.</small>
               </article>
             </div>
-            <button class="secondary next-step" type="button" data-next-step="risk">Vedi perché</button>
+            <div class="guided-action-row cfg-cta">
+              <button class="primary next-step" type="button" data-next-step="risk">Vedi perché: apri il rischio reale</button>
+              <small>Nessuna indicazione di acquisto o vendita. Analisi puramente educativa.</small>
+            </div>
+            <p class="cfg-disclaimer">Punteggi e sintesi sono calcolati su dati storici simulati. Le performance passate non garantiscono risultati futuri.</p>
           </div>
 
-          <div class="risk-reality result-step" data-step="risk" id="risk-reality" aria-label="Rischio reale">
-            <div class="table-title">
-              <h3>Riusciresti davvero a sopportare questa perdita?</h3>
-              <p class="section-intro">Questa sezione traduce il rischio storico in euro e lo confronta con la perdita massima che hai dichiarato di poter sopportare.</p>
-            </div>
+          <div class="risk-reality cfg-guide cfg-result result-step" data-step="risk" id="risk-reality" aria-label="Rischio reale">
+            <section class="cfg-hero">
+              <div class="cfg-hero-text">
+                <p class="eyebrow">Approfondimento · Gratis<button type="button" class="cfg-info" data-tip="Qui il rischio diventa concreto: quanto potresti perdere in euro nei momenti difficili, confrontato con la soglia che hai dichiarato di poter sopportare." aria-label="Spiegami questa sezione">i</button></p>
+                <h3>Riusciresti davvero a sopportare questa perdita?</h3>
+                <p>Questa sezione traduce il rischio storico in euro e lo confronta con la perdita massima che hai dichiarato di poter sopportare.</p>
+              </div>
+              <span class="cfg-hero-badge">Rischio</span>
+            </section>
             <div class="diagnostic-grid">
               <article>
                 <span>Oscillazione media annua</span>
@@ -568,6 +576,7 @@
                 <small>Il rischio più concreto emerso dai dati.</small>
               </article>
             </div>
+            <p class="cfg-disclaimer">La peggiore perdita storica è il calo massimo registrato nel periodo analizzato: in futuro la perdita potrebbe essere diversa, anche maggiore.</p>
           </div>
 
           <div class="portfolio-comparison result-step" data-step="backtest">

@@ -6740,3 +6740,159 @@ body[data-comparison-mode="standard_only"] .result-step:not(#benchmark-results) 
     max-width: 200px;
   }
 }
+
+/* ============================================================
+   REDESIGN — Diagnosi & Rischio reale (result sections)
+   Reuses the cfg green system. Scoped under .cfg-result so it
+   layers on top of the existing diagnostic/risk styles.
+   ============================================================ */
+.cfg-result {
+  display: grid;
+  gap: 16px;
+}
+
+/* Hero shared with setup sections */
+.cfg-result.diagnostic-dashboard {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+.cfg-result .cfg-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--cfg-green-line);
+  border-radius: var(--cfg-radius);
+  background: linear-gradient(180deg, var(--cfg-green-tint), #ffffff 72%);
+  box-shadow: var(--cfg-shadow);
+}
+.cfg-result .cfg-hero .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  color: var(--cfg-green-dark);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 900;
+}
+.cfg-result .cfg-hero h3 {
+  margin: 10px 0 8px;
+  font-size: clamp(20px, 2.2vw, 27px);
+  line-height: 1.18;
+  color: var(--cfg-ink);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.cfg-result .cfg-hero p:not(.eyebrow) {
+  margin: 0;
+  color: var(--cfg-muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 64ch;
+}
+
+/* Diagnostic score chip becomes the hero's right anchor */
+.cfg-result .diagnostic-score {
+  flex: none;
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 3px;
+  min-width: 150px;
+  padding: 16px 18px;
+  border: 1px solid var(--cfg-green-line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--cfg-shadow);
+}
+.cfg-result .diagnostic-score span {
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cfg-muted);
+  text-align: center;
+}
+.cfg-result .diagnostic-score strong {
+  font-size: 32px;
+  line-height: 1;
+  color: var(--cfg-green-dark);
+  letter-spacing: -0.02em;
+}
+.cfg-result .diagnostic-score small {
+  font-size: 11px;
+  color: var(--cfg-muted);
+  text-align: center;
+}
+
+/* Metric grid — clean premium cards */
+.cfg-result .diagnostic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.cfg-result .diagnostic-grid article {
+  display: grid;
+  gap: 5px;
+  align-content: start;
+  padding: 16px;
+  border: 1px solid var(--cfg-line);
+  border-left: 4px solid var(--cfg-green);
+  border-radius: 14px;
+  background: var(--cfg-surface);
+  box-shadow: none;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.cfg-result .diagnostic-grid article:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--cfg-shadow);
+}
+.cfg-result .diagnostic-grid article span {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cfg-muted);
+}
+.cfg-result .diagnostic-grid article strong {
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--cfg-ink);
+}
+.cfg-result .diagnostic-grid article small {
+  font-size: 12px;
+  color: var(--cfg-muted);
+  line-height: 1.45;
+}
+/* Accent rotation for the first three "priority" cards */
+.cfg-result .diagnostic-grid article:nth-child(1) {
+  border-left-color: var(--cfg-red);
+}
+.cfg-result .diagnostic-grid article:nth-child(2) {
+  border-left-color: var(--cfg-green);
+}
+.cfg-result .diagnostic-grid article:nth-child(3) {
+  border-left-color: var(--cfg-gold);
+}
+
+@media (max-width: 860px) {
+  .cfg-result .diagnostic-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .cfg-result .cfg-hero {
+    flex-direction: column;
+  }
+  .cfg-result .diagnostic-score {
+    width: 100%;
+  }
+}
+@media (max-width: 520px) {
+  .cfg-result .diagnostic-grid {
+    grid-template-columns: 1fr;
+  }
+}
